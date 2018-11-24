@@ -43,10 +43,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String str1 = editText1.getText().toString();
         String str2 = editText2.getText().toString();
 
-        // editTextが未入力ならアラートを表示
-        if (str1.equals("") || str2.equals("")) {
-            showAlertDialog();
-        } else {
+        // 例外処理があった時にアラートを表示
+        try {
             Intent intent = new Intent(this, SecondActivity.class);
 
             // strをdouble型に変換
@@ -62,19 +60,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } else if (v.getId() == R.id.button3) {
                 result = value1 * value2;
             } else if (v.getId() == R.id.button4) {
+                if (value2 == 0){
+                    showAlertDialog("0での割り算はできません","他の数値を入力してください");
+                    return;
+                }
                 result = value1 / value2;
             }
 
             intent.putExtra("VALUE", result);
             startActivity(intent);
+
+        } catch (NumberFormatException e) {
+            showAlertDialog("数値が入力されていません","何か数値を入力してください");
         }
     }
 
-    private void showAlertDialog() {
+    private void showAlertDialog(String title, String message) {
         // AlertDialog.Builderクラスを使ってAlertDialogの準備をする
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("未入力");
-        alertDialogBuilder.setMessage("何か数値を入力してください");
+        alertDialogBuilder.setTitle(title);
+        alertDialogBuilder.setMessage(message);
 
         // OKボタンに表示される文字列、押したときのリスナーを設定する
         alertDialogBuilder.setPositiveButton("OK",

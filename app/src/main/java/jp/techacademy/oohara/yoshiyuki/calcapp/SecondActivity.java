@@ -15,7 +15,13 @@ public class SecondActivity extends AppCompatActivity {
         Intent intent = getIntent();
         double result = intent.getDoubleExtra("VALUE", 0);
 
+        // 末尾に「.0」があれば削除
+        String str = String.valueOf(result);
+        if (str.endsWith(".0")) {
+            str  = str.substring(0, str.length() - 2);
+        }
+
         TextView textView = (TextView) findViewById(R.id.textView);
-        textView.setText(String.valueOf(result));
+        textView.setText(String.valueOf(str));
     }
 }
